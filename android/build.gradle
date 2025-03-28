@@ -25,7 +25,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    namespace "co.com.webintegral.agora_uikit"
+    namespace "io.agora.agora_flutter_uikit"
     compileSdkVersion 33
 
     sourceSets {
