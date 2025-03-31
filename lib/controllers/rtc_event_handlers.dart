@@ -62,7 +62,9 @@ Future<RtcEngineEventHandler> rtcEngineEventHandler(
     agoraEventHandlers.onFirstLocalVideoFrame
         ?.call(source, width, height, elapsed);
   }, onFirstLocalVideoFramePublished: (source, elapsed) {
-    agoraEventHandlers.onFirstLocalVideoFramePublished?.call(source, elapsed);
+    ///TODO: VIDEO SOURCE IS BEING HARDCODED
+    agoraEventHandlers.onFirstLocalVideoFramePublished
+        ?.call(VideoSourceType.videoSourceCamera, elapsed);
   }, onFirstRemoteAudioDecoded: (connection, uid, elapsed) {
     agoraEventHandlers.onFirstRemoteAudioDecoded
         ?.call(connection, uid, elapsed);
@@ -117,7 +119,9 @@ Future<RtcEngineEventHandler> rtcEngineEventHandler(
   }, onLastmileProbeResult: (result) {
     agoraEventHandlers.onLastmileProbeResult?.call(result);
   }, onLocalVideoStats: (source, stats) {
-    agoraEventHandlers.onLocalVideoStats?.call(source, stats);
+    ///TODO: VIDEO SOURCE IS BEING HARDCODED
+    agoraEventHandlers.onLocalVideoStats
+        ?.call(VideoSourceType.videoSourceCamera, stats);
   }, onLocalAudioStats: (connection, stats) {
     agoraEventHandlers.onLocalAudioStats?.call(connection, stats);
   }, onRemoteVideoStats: (connection, stats) {
@@ -302,15 +306,22 @@ Future<RtcEngineEventHandler> rtcEngineEventHandler(
     agoraEventHandlers.onCameraReady?.call();
   }, onEncryptionError: (connection, errorType) {
     agoraEventHandlers.onEncryptionError?.call(connection, errorType);
-  }, onExtensionError: (provider, extension, error, message) {
-    agoraEventHandlers.onExtensionError
-        ?.call(provider, extension, error, message);
-  }, onExtensionEvent: (provider, extension, key, value) {
-    agoraEventHandlers.onExtensionEvent?.call(provider, extension, key, value);
-  }, onExtensionStarted: (provider, extension) {
-    agoraEventHandlers.onExtensionStarted?.call(provider, extension);
-  }, onExtensionStopped: (provider, extension) {
-    agoraEventHandlers.onExtensionStopped?.call(provider, extension);
+  }, onExtensionErrorWithContext: (
+    extension,
+    error,
+    msg,
+  ) {
+    agoraEventHandlers.onExtensionError?.call(extension.providerName ?? '',
+        extension.extensionName ?? '', error, msg);
+  }, onExtensionEventWithContext: (extension, key, value) {
+    agoraEventHandlers.onExtensionEvent?.call(extension.providerName ?? '',
+        extension.extensionName ?? '', key, value);
+  }, onExtensionStartedWithContext: (extension) {
+    agoraEventHandlers.onExtensionStarted
+        ?.call(extension.providerName ?? '', extension.extensionName ?? '');
+  }, onExtensionStoppedWithContext: (extension) {
+    agoraEventHandlers.onExtensionStopped
+        ?.call(extension.providerName ?? '', extension.extensionName ?? '');
   }, onIntraRequestReceived: (connection) {
     agoraEventHandlers.onIntraRequestReceived?.call(connection);
   }, onPermissionError: (permissionType) {
